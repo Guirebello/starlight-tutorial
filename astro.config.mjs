@@ -12,7 +12,7 @@ export default defineConfig({
 				starlightOpenAPI([
 				  {
 				   base: 'api',
-				   label: 'My API',
+				   label: 'Referências da API',
 				   schema: './src/schemas/apihub.json',
 				  },
 				]),
@@ -23,14 +23,14 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Guides',
+					label: 'Guias',
 					items: [
 						// Each item here is one entry in the navigation menu.
 						{ label: 'Example Guide', slug: 'guides/example' },
 					],
 				},
 				{
-					label: 'Reference',
+					label: 'Concepts',
 					autogenerate: { directory: 'reference' },
 				},
 				 // Add the generated sidebar group to the sidebar.
