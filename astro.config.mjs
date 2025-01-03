@@ -18,9 +18,9 @@ export default defineConfig({
               },
             ]),
           ],
-        title: 'My Docs',
+        title: 'Layers',
         social: {
-            github: 'https://github.com/withastro/starlight',
+            github: 'https://github.com/Guirebello/starlight-tutorial',
         },
         sidebar: [
             {
