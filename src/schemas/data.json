@@ -1,0 +1,3491 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sincronização de dados",
+    "description": "A API de dados permite que você administre usuários, membros, grupos, matrículas e seus vínculos",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.layers.digital"
+    }
+  ],
+  "paths": {
+    "/v1/@layers:data:Users:getUpdatedAfter": {
+      "post": {
+        "tags": [
+          "Layers:data:Users"
+        ],
+        "summary": "Usuários atualizados",
+        "description": "Prover os usuários da comunidade de acordo com o período letivo que foram atualizados a partir de uma data específica.",
+        "operationId": "getUsers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LayersDataGetUpdatedAfter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/responseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/@layers:data:Members:getUpdatedAfter": {
+      "post": {
+        "tags": [
+          "Layers:data:Members"
+        ],
+        "summary": "Membros atualizados",
+        "description": "Prover os membros da comunidade de acordo com o período letivo que foram atualizados a partir de uma data específica.",
+        "operationId": "getMembers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LayersDataGetUpdatedAfter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/layers_data_Members_getUpdatedAfter.v1_responseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/@layers:data:Groups:getUpdatedAfter": {
+      "post": {
+        "tags": [
+          "Layers:data:Groups"
+        ],
+        "summary": "Grupos atualizados",
+        "description": "Prover os grupos da comunidade de acordo com o período letivo que foram atualizados a partir de uma data específica.",
+        "operationId": "getGroups",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LayersDataGetUpdatedAfter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/layers_data_Groups_getUpdatedAfter.v1_responseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/@layers:data:Components:getUpdatedAfter": {
+      "post": {
+        "tags": [
+          "Layers:data:Components"
+        ],
+        "summary": "Componentes atualizados",
+        "description": "Prover os componentes da comunidade de acordo com o período letivo que foram atualizados a partir de uma data específica.",
+        "operationId": "getComponents",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LayersDataGetUpdatedAfter"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/layers_data_Components_getUpdatedAfter.v1_responseSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/@layers:data:Check": {
+      "post": {
+        "tags": [
+          "Layers:data:Check"
+        ],
+        "summary": "Checar status da integração",
+        "description": "A Layers chama essa rota antes de iniciar a importação de dados para verificar se o app provedor está disponível para responder as informações. Ao receber essa requisição, o app provedor de dados deve resopnder com status 200 caso esteja pronto para prover dados.",
+        "operationId": "check",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Context"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/@layers:data:Prepare": {
+      "post": {
+        "tags": [
+          "Layers:data:fullSync"
+        ],
+        "summary": "Preparar para sincronização",
+        "description": "A Layers chama essa rota alguns minutos antes de requisitar todas as informações de sincronização. Ao receber essa requisição, o app fornecedor de dados deve fazer todos os processos necessários para ter os dados disponíveis para responder quando receber as requisições de fornecer dados.",
+        "operationId": "prepare",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Context"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "required": [
+                          "uploadUrl",
+                          "syncProfileId",
+                          "syncRunId",
+                          "season"
+                        ],
+                        "properties": {
+                          "uploadUrl": {
+                            "type": "string",
+                            "description": "URL para a qual devem ser enviadas as entidades de sincronização"
+                          },
+                          "syncProfileId": {
+                            "type": "string",
+                            "description": "Identificador do perfíl de sincronização"
+                          },
+                          "syncRunId": {
+                            "type": "string",
+                            "description": "Identificador da execução da sincronização"
+                          },
+                          "season": {
+                            "type": "string",
+                            "description": "Identificador do período ativo"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/v1/community/permissions": {
+      "get": {
+        "tags": [
+          "Comunidade"
+        ],
+        "summary": "Listar permissões",
+        "description": "Listar permissões da comunidade",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Objeto contento todas as permissões na comunidade",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "permission_name": {
+                      "type": "object",
+                      "properties": {
+                        "group": {
+                          "type": "string",
+                          "description": "Grupo da permissão",
+                          "example": "Agenda - Agenda"
+                        },
+                        "includes": {
+                          "type": "array",
+                          "description": "Lista de outras permissões contidas nessa permissão",
+                          "items": {
+                            "type": "string",
+                            "example": "@admin:agenda:events:autoapprove"
+                          }
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "Descrição que aparece na interface",
+                          "example": "Aprovar conteúdos da agenda"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Identificador da permissão (igual à chave que contém esse objeto)",
+                          "example": "@admin:agenda:events:approve"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/components": {
+      "get": {
+        "tags": [
+          "Componentes"
+        ],
+        "summary": "Listar componentes",
+        "description": "Listar componentes registrados na Layers",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:read",
+          "group:read:scoped"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Número e lista de componentes encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "Número de componentes encontrados"
+                    },
+                    "hits": {
+                      "type": "array",
+                      "description": "Array contendo os componentes encontrados",
+                      "items": {
+                        "$ref": "#/components/schemas/Component"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/enrollments/{enrollmentId}": {
+      "get": {
+        "tags": [
+          "Matrículas"
+        ],
+        "summary": "Ver matricula",
+        "description": "Ver matrícula especificada",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/PathEnrollmentId"
+          },
+          {
+            "name": "group",
+            "in": "query",
+            "description": "Identificador do grupo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:write",
+          "group:write:scoped"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Matrículas que correspondem ao filtro da query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Enrollment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/enrollments": {
+      "get": {
+        "tags": [
+          "Matrículas"
+        ],
+        "summary": "Listar matriculas",
+        "description": "Listar matrículas no grupo especificado",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/Active"
+          },
+          {
+            "name": "group",
+            "in": "query",
+            "description": "Identificador do grupo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:write",
+          "group:write:scoped"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Matrículas que correspondem ao filtro da query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Enrollment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/enrollments/search": {
+      "get": {
+        "tags": [
+          "Matrículas"
+        ],
+        "summary": "Buscar matriculas",
+        "description": "Buscar matrículas no grupo especificado",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/Active"
+          },
+          {
+            "name": "group",
+            "in": "query",
+            "description": "Identificador do grupo",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:write",
+          "group:write:scoped"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Matrículas que correspondem ao filtro da query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number",
+                      "description": "Número de matrículas encontradas",
+                      "example": 1
+                    },
+                    "hits": {
+                      "type": "array",
+                      "description": "Matrículas encontradas",
+                      "items": {
+                        "$ref": "#/components/schemas/Enrollment"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/groups/{groupId}/admins": {
+      "get": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Listar administradores",
+        "description": "Listar administradores do grupo específicado",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/PathGroupId"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:read",
+          "group:read:scoped"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "ObjectId",
+                        "description": "Identificador do usuário administrador da turma"
+                      },
+                      "user": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/groups/{groupId}/enrollments": {
+      "get": {
+        "tags": [
+          "Matrículas"
+        ],
+        "summary": "Listar matriculas",
+        "description": "Listar matriculas do grupo especificado",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/PathGroupId"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:read",
+          "group:read:scoped"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "ObjectId",
+                        "description": "Identificador do documento da matrícula",
+                        "readOnly": true
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "description": "Data de criação da matrícula em UTC corrigido para o fuso da comunidade",
+                        "example": "2020-01-01T00:00:00.000Z",
+                        "readOnly": true
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "description": "Data da última modificação da matrícula em UTC corrido para o fuso da comunidade",
+                        "example": "2020-01-01T00:00:00.000Z",
+                        "readOnly": true
+                      },
+                      "community": {
+                        "type": "string",
+                        "description": "Identificador da comunidade da matrícula",
+                        "example": "test",
+                        "readOnly": true
+                      },
+                      "kind": {
+                        "type": "string",
+                        "description": "Tipo de entidade que está vinculada ao grupo",
+                        "example": "member"
+                      },
+                      "entity": {
+                        "$ref": "#/components/schemas/Member"
+                      },
+                      "group": {
+                        "type": "string",
+                        "format": "ObjectId",
+                        "description": "Identificador do grupo à qual a entidade está matriculada",
+                        "readOnly": true
+                      },
+                      "active": {
+                        "type": "boolean",
+                        "description": "Chave que indica se essa matrícula está ativa (é mudada para false quando a entidade é removida do grupo)",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/groups/{groupId}": {
+      "get": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Visualizar Grupo",
+        "description": "Visualizar informações do grupo especificado",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/PathGroupId"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupo específicado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Group"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/groups": {
+      "get": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Listar grupos",
+        "description": "Listar grupos existentes na Layers",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:read",
+          "group:read:scoped"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/Active"
+          },
+          {
+            "$ref": "#/components/parameters/Name"
+          },
+          {
+            "$ref": "#/components/parameters/GroupAdmin"
+          },
+          {
+            "$ref": "#/components/parameters/Season"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Grupos que atendem às restrições ordenados por data de criação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Group"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/groups/search": {
+      "get": {
+        "tags": [
+          "Grupos"
+        ],
+        "summary": "Buscar grupos",
+        "description": "Buscar grupos usando texto livre no parametro q e outros parâmetros de filtro.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/Active"
+          },
+          {
+            "$ref": "#/components/parameters/Name"
+          },
+          {
+            "$ref": "#/components/parameters/GroupAdmin"
+          },
+          {
+            "$ref": "#/components/parameters/Season"
+          },
+          {
+            "$ref": "#/components/parameters/Alias"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Texto de busca. Pode ser o nome ou identificador do grupos.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Número e lista de grupos encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "Número de resultados encontrados"
+                    },
+                    "hits": {
+                      "type": "array",
+                      "description": "Array contendo os resultados da busca ordenados pelos que mais se encaixam nos termos da busca",
+                      "items": {
+                        "$ref": "#/components/schemas/Group"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/members": {
+      "get": {
+        "tags": [
+          "Membros"
+        ],
+        "summary": "Listar Membros",
+        "description": "Listar membros existentes.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "member:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/UpdatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/Active"
+          },
+          {
+            "$ref": "#/components/parameters/Alias"
+          },
+          {
+            "$ref": "#/components/parameters/Name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Membros ordenados por data de criação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Member"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/members/{memberId}": {
+      "get": {
+        "tags": [
+          "Membros"
+        ],
+        "summary": "Visualizar membro",
+        "description": "Visualizar informações do membro especificado",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/PathMemberId"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "member:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Informações do membro especificado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/members/search": {
+      "get": {
+        "tags": [
+          "Membros"
+        ],
+        "summary": "Buscar membros",
+        "description": "Buscar membros. Essa busca pode ser feita com filtros através dos parâmetros listados bem como texto livre no parâmetro q.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/UpdatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/Status"
+          },
+          {
+            "$ref": "#/components/parameters/Active"
+          },
+          {
+            "$ref": "#/components/parameters/Alias"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Texto de busca. Pode ser o nome ou alias do membro.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "member:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "Número e lista de membros encontrados.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number",
+                      "description": "Número de membros encontrados",
+                      "example": 1
+                    },
+                    "hits": {
+                      "type": "array",
+                      "description": "Lista de membros encontrados ordenados por quão bem se encaixam na busca",
+                      "items": {
+                        "$ref": "#/components/schemas/Member"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/network/communities": {
+      "get": {
+        "tags": [
+          "Redes"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "network:communities:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "apps"
+        ],
+        "summary": "Listar comunidades da rede",
+        "description": "Listar as comunidades na rede",
+        "responses": {
+          "200": {
+            "description": "Lista de comunidades na rede",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Community"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/network/roles": {
+      "get": {
+        "tags": [
+          "Redes"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "network:communities:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "apps"
+        ],
+        "summary": "Listar permissões",
+        "description": "Listar as permissões que existem na comunidade",
+        "responses": {
+          "200": {
+            "description": "Lista de permissões existentes nas comunidades da rede",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "string",
+                        "example": "admin"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "👩‍💻 Administrador Geral"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Acesso à todos os recursos do Sistema"
+                      },
+                      "group": {
+                        "type": "string",
+                        "example": "Geral"
+                      },
+                      "pinned": {
+                        "type": "string",
+                        "example": true
+                      },
+                      "includes": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "example": [
+                          "sync:manage",
+                          "ticket:manage",
+                          "group:manage",
+                          "member:manage",
+                          "user:manage",
+                          "season:manage",
+                          "export:manage",
+                          "payments:admin",
+                          "statistics:read"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/network/tags": {
+      "get": {
+        "tags": [
+          "Redes"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "network:communities:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "apps"
+        ],
+        "summary": "Listar tags da rede",
+        "description": "Listar as tags disponíveis na rede",
+        "responses": {
+          "200": {
+            "description": "Lista de estimativas de usuários contidos nos targets para cada comunidade",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "Tags disponíveis na rede",
+                  "items": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/season/active": {
+      "get": {
+        "tags": [
+          "Períodos"
+        ],
+        "summary": "Ver Período Ativo",
+        "description": "Ver período ativo.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "season:manage"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Períodos existentes na comunidade",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Season"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/season": {
+      "get": {
+        "tags": [
+          "Períodos"
+        ],
+        "summary": "Listar Períodos",
+        "description": "Listar períodos existentes.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "season:manage"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Períodos existentes na comunidade",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Season"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Listar tags",
+        "description": "Listar tags cadastradas",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "member:write"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de tags",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tags/search": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Buscar tags",
+        "description": "Buscar tags",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "member:write"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Texto de busca pelo nome da tag",
+            "required": false,
+            "example": "Ensino Médio",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários que estão vinculados ao membro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number",
+                      "description": "Número de tags que passam pela query",
+                      "example": 1
+                    },
+                    "hits": {
+                      "type": "array",
+                      "description": "Tags encontradas",
+                      "items": {
+                        "$ref": "#/components/schemas/Tag"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Listar usuários",
+        "description": "Listar contas de acesso de usuários.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/UpdatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/Status"
+          },
+          {
+            "$ref": "#/components/parameters/Active"
+          },
+          {
+            "$ref": "#/components/parameters/Roles"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "user:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number",
+                      "description": "Número de Usuários encontrados",
+                      "example": 10
+                    },
+                    "hits": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/search": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Buscar usuários",
+        "description": "Buscar contas de acesso de usuários. Essa busca pode ser feita com filtros através dos parâmetros listados bem como texto livre no parâmetro q.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/CreatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/UpdatedAt"
+          },
+          {
+            "$ref": "#/components/parameters/Status"
+          },
+          {
+            "$ref": "#/components/parameters/Roles"
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Texto de busca. Pode ser o nome, e-mail ou alias do usuário.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "emails",
+            "in": "query",
+            "description": "Lista de emails para busca.",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "user:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "number",
+                      "description": "Número de Usuários encontrados",
+                      "example": 10
+                    },
+                    "hits": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/related": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Visualizar membros relacionados",
+        "description": "Visualizar todos os membros relacionados com o usuário especificado",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "user:write"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/PathUserId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Membros relacionados com o usuário especificado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Member"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}": {
+      "get": {
+        "tags": [
+          "Usuários"
+        ],
+        "summary": "Visualizar informações do usuário",
+        "description": "Visualizar informações da conta de acesso do usuário especificado.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "$ref": "#/components/parameters/PathUserId"
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "user:read"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/sync/{syncRunId}/uploadEntities": {
+      "post": {
+        "tags": [
+          "Layers:data:fullSync"
+        ],
+        "summary": "Enviar dados de sincronização",
+        "description": "Enviar entidades para sincronização com a Layers.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Community-id"
+          },
+          {
+            "name": "syncRunId",
+            "in": "path",
+            "description": "Identificador da rodada de sincronização",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "test"
+            }
+          }
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "x-layers-permissions": [
+          "group:write"
+        ],
+        "x-layers-context": [
+          "user",
+          "app"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadEntitiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload recebido"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Bearer": {
+        "description": "Generate a token",
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Context": {
+        "type": "object",
+        "required": [
+          "context",
+          "secret"
+        ],
+        "properties": {
+          "context": {
+            "type": "object",
+            "required": [
+              "issuedAt",
+              "action",
+              "community"
+            ],
+            "properties": {
+              "issuedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Data e hora de quando a requisição foi feita"
+              },
+              "action": {
+                "type": "string",
+                "description": "Identificador da action",
+                "example": "@layers:identificador_da_action"
+              },
+              "community": {
+                "type": "string",
+                "description": "Identificador da comunidade",
+                "example": "idcomunidadeteste"
+              }
+            }
+          },
+          "secret": {
+            "type": "string",
+            "description": "Chave secreta específica do app",
+            "example": "exemplo1-e000-11xe-2m33-4444444plo"
+          }
+        }
+      },
+      "LayersDataGetUpdatedAfter": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Context"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "required": [
+                  "syncProfileId",
+                  "syncRunId",
+                  "season",
+                  "after",
+                  "limit"
+                ],
+                "properties": {
+                  "syncProfileId": {
+                    "type": "string",
+                    "format": "ObjectId",
+                    "description": "Identificador do perfil de sincronização"
+                  },
+                  "syncRunId": {
+                    "type": "string",
+                    "format": "ObjectId",
+                    "description": "Identificador da execução"
+                  },
+                  "season": {
+                    "type": "string",
+                    "description": "Identificador do período letivo",
+                    "example": "2020"
+                  },
+                  "after": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2020-01-01T00:00:00.000Z",
+                    "description": "Quando especificado, deve filtrar entidades com o updatedAt maior ou igual ao after"
+                  },
+                  "limit": {
+                    "type": "number",
+                    "format": "integer",
+                    "description": "Quando especificado, deve limitar o número de entidades retornadas para menor ou igual ao valor do limit",
+                    "example": 3
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "responseSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "active": {
+                  "title": "Ativo",
+                  "description": "Indica se o usuário deve estar ativo ou não",
+                  "type": "boolean"
+                },
+                "alias": {
+                  "title": "Identificador externo",
+                  "description": "Identificador único do usuário",
+                  "type": "string",
+                  "pattern": "[a-zA-Z0-9@-_./]+",
+                  "maxLength": 32,
+                  "minLength": 1
+                },
+                "name": {
+                  "title": "Nome",
+                  "description": "Nome do usuário",
+                  "type": "string",
+                  "nullable": true,
+                  "minLength": 1
+                },
+                "email": {
+                  "type": "string",
+                  "description": "E-mail do usuário",
+                  "format": "email",
+                  "nullable": true,
+                  "minLength": 1
+                },
+                "birth": {
+                  "type": "string",
+                  "description": "Data de nascimento do usuário",
+                  "format": "date",
+                  "nullable": true
+                },
+                "rolesSet": {
+                  "type": "object",
+                  "description": "Define as permissões que devem ser editadas no usuário, é um objeto de chave-valor onde a chave é o identificador da permissão e o valor é um booleano indicando se a permissão deve ser adicionada ou removida, se não desejar alterar a permissão, basta não enviar a chave. As permissões padrões são (student, guardian, professor, coordenator, admin).",
+                  "properties": {
+                    "student": {
+                      "type": "boolean"
+                    },
+                    "guardian": {
+                      "type": "boolean"
+                    },
+                    "professor": {
+                      "type": "boolean"
+                    },
+                    "coordenator": {
+                      "type": "boolean"
+                    },
+                    "admin": {
+                      "type": "boolean"
+                    }
+                  },
+                  "additionalProperties": {
+                    "type": "boolean"
+                  },
+                  "nullable": true
+                },
+                "fields": {
+                  "type": "object",
+                  "description": "Campos personalizados para o usuário, é um objeto de chave-valor onde a chave é o identificador do campo e o valor é o valor do campo na estrutura em que foi definido previamente no manifesto do aplicativo.",
+                  "nullable": true,
+                  "additionalProperties": true
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Data da última atualiazção do usuário"
+                },
+                "cpf": {
+                  "type": "string",
+                  "description": "CPF do usuário",
+                  "nullable": true
+                }
+              },
+              "required": [
+                "active",
+                "alias",
+                "name",
+                "email",
+                "rolesSet",
+                "updatedAt"
+              ],
+              "additionalProperties": false,
+              "description": "Dados dos usuários"
+            },
+            "example": [
+              {
+                "active": true,
+                "alias": "123",
+                "name": "João",
+                "email": "joao@layers.education",
+                "rolesSet": {
+                  "student": false,
+                  "guardian": true,
+                  "professor": false,
+                  "coordenator": false
+                },
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "updatedAt": "2020-01-01T00:00:00.000Z"
+              },
+              {
+                "active": true,
+                "alias": "456",
+                "name": "Maria",
+                "email": "maria@layers.education",
+                "rolesSet": {
+                  "student": false,
+                  "guardian": true,
+                  "professor": true,
+                  "coordenator": false,
+                  "admin": true
+                },
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "updatedAt": "2020-02-01T00:00:00.000Z"
+              },
+              {
+                "active": false,
+                "alias": "789",
+                "name": "Fulano",
+                "email": "fulano@layers.education",
+                "rolesSet": {
+                  "student": true,
+                  "guardian": false,
+                  "professor": false,
+                  "coordenator": false
+                },
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "updatedAt": "2020-03-01T00:00:00.000Z"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "layers_data_Members_getUpdatedAfter.v1_responseSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "active": {
+                  "type": "boolean",
+                  "description": "Indica se o membro deve estar ativo ou não"
+                },
+                "alias": {
+                  "type": "string",
+                  "description": "Identificador único do membro"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nome do membro",
+                  "nullable": true
+                },
+                "birth": {
+                  "type": "string",
+                  "description": "Data de nascimento do membro. Formato: YYYY-MM-DD",
+                  "format": "date",
+                  "nullable": true,
+                  "example": "2001-01-01"
+                },
+                "fields": {
+                  "type": "object",
+                  "description": "Campos personalizados para o membro, é um objeto de chave-valor onde a chave é o identificador do campo e o valor é o valor do campo na estrutura em que foi definido previamente no manifesto do aplicativo.",
+                  "nullable": true,
+                  "additionalProperties": true
+                },
+                "users": {
+                  "type": "array",
+                  "description": "Lista de identificadores únicos de usuários vinculados ao membro",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Data da última atualização do membro"
+                }
+              },
+              "required": [
+                "active",
+                "alias",
+                "name",
+                "updatedAt"
+              ],
+              "additionalProperties": false,
+              "description": "Dados dos membros"
+            },
+            "example": [
+              {
+                "active": true,
+                "alias": "123",
+                "name": "João",
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "users": [
+                  "joao@layers.education"
+                ],
+                "updatedAt": "2020-01-01T00:00:00.000Z",
+                "birth": "2001-05-30"
+              },
+              {
+                "active": true,
+                "alias": "456",
+                "name": "Maria",
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "users": [
+                  "maria@layers.education"
+                ],
+                "updatedAt": "2020-02-01T00:00:00.000Z",
+                "birth": "2001-07-16"
+              },
+              {
+                "active": false,
+                "alias": "789",
+                "name": "Fulano",
+                "users": [
+                  "fulano@layers.education"
+                ],
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "updatedAt": "2020-03-01T00:00:00.000Z",
+                "birth": "2001-09-20"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "layers_data_Groups_getUpdatedAfter.v1_responseSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "active": {
+                  "type": "boolean",
+                  "description": "Indica se o grupo deve estar ativo ou não"
+                },
+                "alias": {
+                  "type": "string",
+                  "description": "Identificador único do grupo"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nome do grupo",
+                  "nullable": true
+                },
+                "fields": {
+                  "type": "object",
+                  "description": "Campos personalizados para o grupo, é um objeto de chave-valor onde a chave é o identificador do campo e o valor é o valor do campo na estrutura em que foi definido previamente no manifesto do aplicativo.",
+                  "nullable": true,
+                  "additionalProperties": true,
+                  "properties": {
+                    "@education:basic": {
+                      "type": "object",
+                      "description": "Campo personalizado de educação básica",
+                      "required": [
+                        "periodo",
+                        "tipo"
+                      ],
+                      "properties": {
+                        "nivel": {
+                          "type": "string",
+                          "enum": [
+                            "EI:G0",
+                            "EI:G1",
+                            "EI:G2",
+                            "EI:G3",
+                            "EI:G4",
+                            "EI:G5",
+                            "EF:A1",
+                            "EF:A2",
+                            "EF:A3",
+                            "EF:A4",
+                            "EF:A5",
+                            "EF:A6",
+                            "EF:A7",
+                            "EF:A8",
+                            "EF:A9",
+                            "EM:S1",
+                            "EM:S2",
+                            "EM:S3"
+                          ],
+                          "description": "Identificador da turma",
+                          "example": "EM:S3",
+                          "nullable": true
+                        },
+                        "periodo": {
+                          "description": "Lista de identificadores de períodos relacionados a esse componente",
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "description": "Identificadores de períodos"
+                          },
+                          "example": [
+                            "manha",
+                            "tarde"
+                          ],
+                          "nullable": true
+                        },
+                        "tipo": {
+                          "type": "string",
+                          "enum": [
+                            "regular",
+                            "idiomas",
+                            "extracurricular",
+                            "integral"
+                          ],
+                          "description": "Tipo de ensino",
+                          "example": "regular",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  }
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "Lista de nomes de marcadores do grupo",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true
+                },
+                "components": {
+                  "type": "array",
+                  "description": "Lista de identificadores únicos dos componentes do grupo",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true
+                },
+                "admins": {
+                  "type": "array",
+                  "description": "Lista de administradores do grupo. Todos os administradores que não estiverem na lista serão removidos do grupo. Os administradores podem ser identificados por alias ou e-mail",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "email": {
+                            "description": "E-mail do administrador",
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "components": {
+                            "description": "Lista de identificadores únicos dos componentes desse administrador",
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "email"
+                        ]
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "alias": {
+                            "type": "string",
+                            "description": "Identificador único do administrador"
+                          },
+                          "components": {
+                            "type": "array",
+                            "description": "Lista de identificadores únicos dos componentes desse administrador",
+                            "items": {
+                              "type": "string"
+                            },
+                            "nullable": true
+                          }
+                        },
+                        "required": [
+                          "alias"
+                        ]
+                      }
+                    ]
+                  },
+                  "nullable": true
+                },
+                "adminsSet": {
+                  "type": "array",
+                  "description": "Lista de identificadores de administradores da turma a serem adicionados incrementalmente. Pode ser: alias ou email",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "123abc",
+                    "admin.de.turma@layers.digital"
+                  ]
+                },
+                "users": {
+                  "type": "array",
+                  "description": "Lista de usuários da turma. Todos os usuários que não estiverem na lista serão removidos da turma. Os usuários devem ser identificados por alias",
+                  "items": {
+                    "type": "string",
+                    "description": "Alias do usuário",
+                    "example": "1234"
+                  }
+                },
+                "members": {
+                  "type": "array",
+                  "description": "Lista de membros da turma. Todos os membros que não estiverem na lista serão removidos da turma. Os membros devem ser identificados por alias",
+                  "items": {
+                    "type": "string",
+                    "description": "Alias do membro",
+                    "example": "1234"
+                  }
+                },
+                "membersSet": {
+                  "type": "array",
+                  "description": "Lista de identificadores de membros da turma a serem adicionados incrementalmente. Os membros devem são identificados por alias",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "123abc",
+                    "456def"
+                  ]
+                },
+                "season": {
+                  "type": "string",
+                  "description": "Período do grupo",
+                  "example": "2023"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Data da última atualização do grupo"
+                }
+              },
+              "required": [
+                "active",
+                "alias",
+                "name",
+                "season",
+                "members",
+                "updatedAt"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "layers_data_Components_getUpdatedAfter.v1_responseSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "active": {
+                  "type": "boolean",
+                  "description": "Indica se o componente deve estar ativo ou não"
+                },
+                "alias": {
+                  "type": "string",
+                  "description": "Indentificador único do componente"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nome do componente",
+                  "nullable": true
+                },
+                "fields": {
+                  "type": "object",
+                  "description": "Campos personalizados para o componente, é um objeto de chave-valor onde a chave é o identificador do campo e o valor é o valor do campo na estrutura em que foi definido previamente no manifesto do aplicativo.",
+                  "additionalProperties": true,
+                  "nullable": true
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Data da última atualização do componente"
+                }
+              },
+              "required": [
+                "active",
+                "alias",
+                "name",
+                "updatedAt"
+              ],
+              "additionalProperties": false,
+              "description": "Dados dos componentes"
+            },
+            "example": [
+              {
+                "active": true,
+                "alias": "123",
+                "name": "Matemática",
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "updatedAt": "2020-01-01T00:00:00.000Z"
+              },
+              {
+                "active": true,
+                "alias": "456",
+                "name": "Português",
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "updatedAt": "2020-02-01T00:00:00.000Z"
+              },
+              {
+                "active": false,
+                "alias": "789",
+                "name": "História",
+                "fields": {
+                  "field1": "value1",
+                  "field2": "value2"
+                },
+                "updatedAt": "2020-03-01T00:00:00.000Z"
+              }
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": true
+      },
+      "Component": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "Identificador único do componente",
+            "readOnly": true
+          },
+          "syncedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data da última vez que esse dado foi atualizado em uma sincronização",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do componente",
+            "example": "Português",
+            "minLength": 1,
+            "maxLength": 60
+          },
+          "alias": {
+            "type": "string",
+            "description": "Identificador do componente na comunidade",
+            "example": "PORT"
+          },
+          "fields": {
+            "type": "object",
+            "description": "Campos personalizados da comunidade. Podem ser diferentes de comunidade para comunidade dependendo do tipo de também dos apps instalados na comunidade.",
+            "properties": {
+              "@education:basic": {
+                "type": "object",
+                "description": "Campos personalizados do módulo de educação",
+                "properties": {
+                  "inep": {
+                    "type": "object",
+                    "description": "Tipo de componente curricular definida pelo EducaCenso",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Identificador do componente no inep",
+                        "enum": [
+                          "1",
+                          "2",
+                          "3",
+                          "4",
+                          "5",
+                          "6",
+                          "7",
+                          "8",
+                          "9",
+                          "10",
+                          "11",
+                          "12",
+                          "13",
+                          "14",
+                          "16",
+                          "17",
+                          "20",
+                          "21",
+                          "23",
+                          "25",
+                          "26",
+                          "27",
+                          "28",
+                          "29",
+                          "30",
+                          "31",
+                          "32"
+                        ]
+                      },
+                      "label": {
+                        "type": "string",
+                        "description": "Nome da disciplina no inep",
+                        "enum": [
+                          "1 - Química",
+                          "2 - Física",
+                          "3 - Matemática",
+                          "4 - Biologia",
+                          "5 - Ciências",
+                          "6 - Língua Portuguesa",
+                          "7 - Língua Estrangeira - Inglês",
+                          "8 - Língua Estrangeira - Espanhol",
+                          "9 - Língua Estrangeira - Outra",
+                          "10 - Arte",
+                          "11 - Educação Física",
+                          "12 - História",
+                          "13 - Geografia",
+                          "14 - Filosofia",
+                          "16 - Informática/Computação",
+                          "17 - Áreas do conhecimento profissionalizantes",
+                          "20 - Educação Especial e Práticas Educacionais Inclusivas",
+                          "21 - Diversidade Sociocultural",
+                          "23 - Libras",
+                          "25 - Áreas do conhecimento pedagógicas",
+                          "26 - Ensino religioso",
+                          "27 - Língua Indígena",
+                          "28 - Estudos Sociais",
+                          "29 - Sociologia",
+                          "30 - Língua Estrangeira - Francês",
+                          "31 - Língua Portuguesa como Segunda Língua",
+                          "32 - Estágio curricular supervisionado",
+                          "99 - Outras áreas do conhecimento"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Enrollment": {
+        "type": "object",
+        "required": [
+          "kind",
+          "entity",
+          "group"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "Identificador do documento da matrícula",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação da matrícula em UTC corrigido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Data da última modificação da matrícula em UTC corrido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "community": {
+            "type": "string",
+            "description": "Identificador da comunidade da matrícula",
+            "example": "test",
+            "readOnly": true
+          },
+          "kind": {
+            "type": "string",
+            "description": "Tipo de entidade que está vinculada ao grupo",
+            "example": "member"
+          },
+          "entity": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "Identificador do documento da entidade à qual pertence essa matrícula"
+          },
+          "group": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "Identificador do grupo à qual a entidade está matriculada"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Chave que indica se essa matrícula está ativa (é mudada para false quando a entidade é removida do grupo)",
+            "example": true
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "description": "Usuário da Layers Education",
+        "required": [
+          "email",
+          "name",
+          "roles"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "Identificador do documento do usuário",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação do usuário em UTC corrigido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Data da última modificação do usuário em UTC corrido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Chave que indica se o usuário está ativo (quando o usuário é apagado, essa chave é mudada para false)",
+            "example": true
+          },
+          "community": {
+            "type": "string",
+            "description": "Identificador da communidade do usuário",
+            "example": "test",
+            "readOnly": true
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INVITED",
+              "UNSENT"
+            ],
+            "description": "Status do usuário. Pode ser ativo (ACTIVE), convidado (INVITED) ou não convidado (UNSENT)",
+            "example": "ACTIVE",
+            "readOnly": true
+          },
+          "invitationCount": {
+            "type": "number",
+            "description": "Numero de convites enviados para o usuário",
+            "example": 2,
+            "readOnly": true
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do usuário",
+            "example": "luke@starwars.com"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do usuário",
+            "example": "Gabriel Raniere"
+          },
+          "roles": {
+            "type": "array",
+            "description": "Array contendo as permissões do usuário na plataforma",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "guardian",
+              "professor"
+            ]
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "CEP do usuário",
+                "example": "01414-001"
+              },
+              "state": {
+                "type": "string",
+                "description": "Estado do usuário",
+                "example": "SP"
+              },
+              "city": {
+                "type": "string",
+                "description": "Cidade do usuário",
+                "example": "São Caetano do Sul"
+              },
+              "district": {
+                "type": "string",
+                "description": "Bairro do usuário",
+                "example": "Centro"
+              },
+              "address": {
+                "type": "string",
+                "description": "Rua do usuário",
+                "example": "Rua Pará"
+              },
+              "number": {
+                "type": "string",
+                "description": "Numero da casa do usuário",
+                "example": "79"
+              }
+            }
+          }
+        }
+      },
+      "Member": {
+        "type": "object",
+        "required": [
+          "name",
+          "alias"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Identificador do documento do membro",
+            "example": "12345678",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação do membro em UTC corrigido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Data da última modificação do membro em UTC corrido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "active": {
+            "readOnly": true,
+            "type": "boolean",
+            "description": "Chave que indica se o membro está ativo (quando o membro é apagado, essa chave é mudada para false)",
+            "example": true
+          },
+          "community": {
+            "type": "string",
+            "description": "Identificador da communidade do membro",
+            "example": "test",
+            "readOnly": true
+          },
+          "access": {
+            "readOnly": true,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "permissions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Permissões do usuário atrelado a esse membro",
+                    "example": "guardian"
+                  }
+                },
+                "user": {
+                  "type": "string",
+                  "description": "Identificador do documento do usuário"
+                }
+              }
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do membro",
+            "example": "Gabriel Raniere"
+          },
+          "alias": {
+            "type": "string",
+            "description": "RA do membro",
+            "example": "abc123d"
+          },
+          "birth": {
+            "type": "string",
+            "description": "Data de nascimento",
+            "example": "2010-04-10T00:00:00.000Z"
+          }
+        }
+      },
+      "Group": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "identificador do documento do grupo",
+            "readOnly": true
+          },
+          "alias": {
+            "type": "string",
+            "description": "Identificador da turma único para a comunidade",
+            "readOnly": false,
+            "example": "3A"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação do grupo em UTC corrigido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Data da última modificação do grupo em UTC corrido para o fuso da comunidade",
+            "example": "2020-01-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "community": {
+            "type": "string",
+            "description": "Identificador da communidade do grupo",
+            "example": "test",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do grupo",
+            "example": "Terceiro ano A"
+          },
+          "tags": {
+            "type": "array",
+            "description": "tags às quais esse grupo pertence",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Identificador do documento da tag"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nome da tag",
+                  "example": "Ensino Fundamental"
+                }
+              }
+            }
+          },
+          "admins": {
+            "type": "array",
+            "description": "administradores do grupo",
+            "items": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Chave que indica se o grupo está ativo (quando o grupo é apagado, essa chave é mudada para false)",
+            "example": true
+          },
+          "syncedAt": {
+            "type": "string",
+            "description": "data da última vez que esse grupo foi modificado pela rota /sync",
+            "example": "2020-03-01T00:00:00.000Z",
+            "readOnly": true
+          },
+          "season": {
+            "type": "string",
+            "description": "temporada à qual esse grupo pertence",
+            "example": "Ano letivo 2020",
+            "readOnly": true
+          },
+          "fields": {
+            "type": "object",
+            "description": "Campos personalizados da comunidade. Podem ser diferentes de comunidade para comunidade dependendo do tipo de também dos apps instalados na comunidade.",
+            "properties": {
+              "@education:basic": {
+                "type": "object",
+                "properties": {
+                  "tipo": {
+                    "type": "object",
+                    "description": "Tipo de ensino",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Identificador do nível de ensino",
+                        "enum": [
+                          "regular",
+                          "idiomas",
+                          "extracurricular"
+                        ]
+                      },
+                      "label": {
+                        "type": "string",
+                        "description": "Nome do nível de ensino",
+                        "enum": [
+                          "Ensino Regular",
+                          "Ensino de Idiomas",
+                          "Curso Extracurricular"
+                        ]
+                      }
+                    }
+                  },
+                  "nivel": {
+                    "type": "object",
+                    "description": "Nível de ensino",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Identificador do nível de ensino",
+                        "enum": [
+                          "EI:G0",
+                          "EI:G1",
+                          "EI:G2",
+                          "EI:G3",
+                          "EI:G4",
+                          "EI:G5",
+                          "EF:A1",
+                          "EF:A2",
+                          "EF:A3",
+                          "EF:A4",
+                          "EF:A5",
+                          "EF:A6",
+                          "EF:A7",
+                          "EF:A8",
+                          "EF:A9",
+                          "EM:S1",
+                          "EM:S2",
+                          "EM:S3"
+                        ]
+                      },
+                      "label": {
+                        "type": "string",
+                        "description": "Descrição do nível de ensino",
+                        "enum": [
+                          "Educação Infantil / Berçario",
+                          "Educação Infantil / G1 (0 a 1 ano)",
+                          "Educação Infantil / G2 (1 a 2 anos)",
+                          "Educação Infantil / G3 (2 anos)",
+                          "Educação Infantil / G4 (3 anos)",
+                          "Educação Infantil / G5 (4 anos)",
+                          "Ensino Fundamental / 1º Ano",
+                          "Ensino Fundamental / 2º Ano",
+                          "Ensino Fundamental / 3º Ano",
+                          "Ensino Fundamental / 4º Ano",
+                          "Ensino Fundamental / 5º Ano",
+                          "Ensino Fundamental / 6º Ano",
+                          "Ensino Fundamental / 7º Ano",
+                          "Ensino Fundamental / 8º Ano",
+                          "Ensino Fundamental / 9º Ano",
+                          "Ensino Médio / 1ª Série",
+                          "Ensino Médio / 2ª Série",
+                          "Ensino Médio / 3ª Série"
+                        ]
+                      }
+                    }
+                  },
+                  "periodo": {
+                    "type": "string",
+                    "description": "Período do grupo",
+                    "enum": [
+                      "manha",
+                      "tarde",
+                      "noite"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Community": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação da comunidade"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data da última atualização dessa comunidade"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome da comunidade que aparece para os usuários",
+            "example": "Comunidade de Testes"
+          },
+          "community": {
+            "type": "string",
+            "description": "Identificador da comunidade",
+            "example": "test"
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId",
+            "description": "Identificador do documento da tag",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome da tag",
+            "example": "Ensino Fundamental"
+          },
+          "community": {
+            "type": "string",
+            "description": "Identificador da comunidade da tag",
+            "example": "test",
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação da tag",
+            "readOnly": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data da última atualização da tag",
+            "readOnly": true
+          }
+        }
+      },
+      "Season": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "ObjectId",
+            "readOnly": true,
+            "description": "Identificador único do período na comunidade"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 16,
+            "description": "Nome do período",
+            "example": "2020"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do período",
+            "readOnly": true
+          },
+          "activatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de ativação do período",
+            "readOnly": true
+          },
+          "deactivatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de desativação do período",
+            "readOnly": true
+          }
+        }
+      },
+      "SyncGroup": {
+        "type": "object",
+        "properties": {
+          "alias": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "enrollments": {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "members": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "users",
+              "members"
+            ]
+          },
+          "members": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            ]
+          },
+          "adminsSet": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            ]
+          },
+          "admins": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "alias": {
+                  "type": "string"
+                },
+                "components": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "components"
+              ]
+            }
+          },
+          "components": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fields": {
+            "type": "object",
+            "properties": {
+              "education:basic": {
+                "type": "object",
+                "properties": {
+                  "tipo": {
+                    "type": "string"
+                  },
+                  "nivel": {
+                    "type": "string"
+                  },
+                  "periodo": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "tipo",
+                  "nivel",
+                  "periodo"
+                ]
+              }
+            },
+            "additionalProperties": true
+          },
+          "season": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "alias",
+          "name",
+          "components",
+          "season"
+        ]
+      },
+      "SyncMember": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "alias": {
+            "type": "string"
+          },
+          "birth": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "users",
+          "alias",
+          "birth",
+          "name"
+        ]
+      },
+      "SyncUser": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "birth": {
+            "type": "string"
+          },
+          "season": {
+            "type": "string"
+          },
+          "setRoles": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          },
+          "rolesSet": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "alias",
+          "name",
+          "email"
+        ]
+      },
+      "SyncComponent": {
+        "type": "object",
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "alias",
+          "name"
+        ]
+      },
+      "UploadEntitiesRequest": {
+        "type": "object",
+        "properties": {
+          "groups": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SyncGroup"
+                }
+              },
+              "removeUnlistedAdmins": {
+                "type": "boolean",
+                "description": "Essa flag indica se os administradores que estão vinculados à turma na Layers que não foram enviados nessa sincronização devem ser removidos. Se for `true` os administradores não listados serão removidos."
+              },
+              "removeUnlistedComponents": {
+                "type": "boolean",
+                "description": "Essa flag indica se os componentes que estão vinculados à turma na Layers que não foram enviados nessa sincronização devem ser desvinculados. Se for `true` os componentes não listados serão removidos."
+              },
+              "removeUnlistedEnrollments": {
+                "type": "boolean",
+                "description": "Essa flag indica se os matrículas de membros ou usuários que estão vinculados à turma na Layers que não foram enviadas nessa sincronização devem ser removidas da turma. Se for `true` os componentes não listados serão removidos."
+              },
+              "removeUnlistedTags": {
+                "type": "boolean",
+                "description": "Essa flag indica se as tags vinculadas à turma na Layers mas não foram enviadas nessa sincronização devem ser desvinculadas. Se for `true` as tags não enviadas serão removidas."
+              }
+            }
+          },
+          "members": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SyncMember"
+                }
+              },
+              "removeUnlistedUsers": {
+                "type": "boolean",
+                "description": "Essa flag indica se os usuários vinculados ao membro na Layers mas não foram enviados nessa sincronização devem ser desvinculados. Se for `true` os usuários não enviados serão removidas."
+              }
+            }
+          },
+          "users": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SyncUser"
+                }
+              }
+            }
+          },
+          "components": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SyncComponent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Community-id": {
+        "name": "community-id",
+        "in": "header",
+        "description": "Identificador da comunidade",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "test"
+        }
+      },
+      "PathEnrollmentId": {
+        "name": "enrollmentId",
+        "in": "path",
+        "description": "Identificador da matrícula",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Active": {
+        "name": "active",
+        "in": "query",
+        "description": "Indicador do estado do documento. Quando verdadeiro o documento está ativo e quando falso o documento está apagado.",
+        "required": false,
+        "schema": {
+          "type": "boolean"
+        }
+      },
+      "PathGroupId": {
+        "name": "groupId",
+        "in": "path",
+        "description": "Identificador do grupo.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "CreatedAt": {
+        "name": "createdAt",
+        "in": "query",
+        "description": "Data de criação do documento",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Name": {
+        "name": "name",
+        "in": "query",
+        "description": "Nome",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "GroupAdmin": {
+        "name": "admins.user",
+        "in": "query",
+        "description": "Id de um dos administradores do grupo",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Season": {
+        "name": "season",
+        "in": "query",
+        "description": "Temporada do documento. Geralmente é o ano letivo.",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Alias": {
+        "name": "alias",
+        "in": "query",
+        "description": "Identificador na Layers Education",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "UpdatedAt": {
+        "name": "updateAt",
+        "in": "query",
+        "description": "Data da última modificação do documento",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "PathMemberId": {
+        "name": "memberId",
+        "in": "path",
+        "description": "Identificador do membro.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Status": {
+        "name": "status",
+        "in": "query",
+        "description": "Indicador do status do usuário. Pode ser ativo (ACTIVE), convidado (INVITED) ou não convidado (INACTIVE)",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "Roles": {
+        "name": "roles",
+        "in": "query",
+        "description": "Permissão que o usuário possui",
+        "required": false,
+        "schema": {
+          "type": "string"
+        }
+      },
+      "PathUserId": {
+        "name": "userId",
+        "in": "path",
+        "description": "Identificador do usuário.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "x-nav": [
+    {
+      "name": "import",
+      "tags": [
+        "Layers:data:Check"
+      ]
+    },
+    {
+      "name": "delta_import",
+      "tags": [
+        "Layers:data:Users",
+        "Layers:data:Members",
+        "Layers:data:Groups",
+        "Layers:data:Components"
+      ]
+    },
+    {
+      "name": "full_import",
+      "tags": [
+        "Layers:data:fullSync"
+      ]
+    },
+    {
+      "name": "Importar dados",
+      "tags": [
+        "Sincronização"
+      ]
+    },
+    {
+      "name": "Membros",
+      "schemas": [
+        "Member"
+      ],
+      "tags": [
+        "Membros"
+      ]
+    },
+    {
+      "name": "Usuários",
+      "schemas": [
+        "User"
+      ],
+      "tags": [
+        "Usuários"
+      ]
+    },
+    {
+      "name": "Grupos",
+      "schemas": [
+        "Group"
+      ],
+      "tags": [
+        "Grupos"
+      ]
+    },
+    {
+      "name": "Matrículas",
+      "schemas": [
+        "Enrollment"
+      ],
+      "tags": [
+        "Matrículas"
+      ]
+    },
+    {
+      "name": "Componentes",
+      "schemas": [
+        "Component"
+      ],
+      "tags": [
+        "Componentes"
+      ]
+    },
+    {
+      "name": "Períodos",
+      "schemas": [
+        "Season"
+      ],
+      "tags": [
+        "Períodos"
+      ]
+    },
+    {
+      "name": "Redes",
+      "tags": [
+        "Redes"
+      ]
+    }
+  ]
+}
