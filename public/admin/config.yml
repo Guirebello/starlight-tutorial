@@ -10,7 +10,7 @@ backend:
 collections:
   - name: "guias"
     label: "Guias"
-    folder: "src/content/guias"
+    folder: "src/content/docs/guides"
     create: true
     fields:
       - { label: "Title", name: "title", widget: "string", required: true, hint: "title of the page"}
