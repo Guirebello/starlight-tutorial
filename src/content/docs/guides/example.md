@@ -11,4 +11,4 @@ Writing a good guide requires thinking about what your users are trying to do.
 
 ## Paginas que criei
 
-* [pagina teste](localhost:4321/guides/testando)
+* [pagina teste](./guides/testando)
