@@ -1,3 +1,12 @@
+
+backend:
+  name: github
+  branch: main
+  repo: Guirebello/starlight-tutorial
+  site_domain: localhost:4321
+  base_url: http://localhost:4321/
+  auth_endpoint: oauth
+
 collections:
   - name: "guias"
     label: "Guias"
@@ -22,8 +31,4 @@ collections:
 
 media_folder: "src/assets/images" # Location where files will be stored in the repo
 public_folder: "src/assets/images" # The src attribute for uploaded media
-
-backend:
-  name: test-repo
-
 publish_mode: editorial_workflow

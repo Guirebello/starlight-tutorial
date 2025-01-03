@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/starlight": "^0.30.3",
     "astro": "^5.0.2",
+    "astro-decap-cms-oauth": "^0.5.1",
     "decap-cms-app": "^3.4.0",
     "sharp": "^0.32.5",
     "starlight-openapi": "^0.9.0"
