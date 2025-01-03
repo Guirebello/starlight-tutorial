@@ -1,4 +1,13 @@
 collections:
+  - name: "guias"
+    label: "Guias"
+    folder: "src/content/guias"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", required: true, hint: "title of the page"}
+      - { label: "Feeatured Image", name: "thumbnail", widget: "image", required: false }
+      - { label: "body", name: "body", widget: "markdown" } 
+
   - name: "blog" # Used in routes, e.g., /admin/collections/blog
     label: "Blog" # Used in the UI
     folder: "src/content/blog" # The path to the folder where the documents are stored
@@ -10,8 +19,11 @@ collections:
       - { label: "Featured Image", name: "thumbnail", widget: "image" }
       - { label: "Rating (scale of 1-5)", name: "rating", widget: "number" }
       - { label: "Body", name: "body", widget: "markdown" }
+
 media_folder: "src/assets/images" # Location where files will be stored in the repo
 public_folder: "src/assets/images" # The src attribute for uploaded media
 
 backend:
   name: test-repo
+
+publish_mode: editorial_workflow
